@@ -1,6 +1,10 @@
+import type { Handle } from '@sveltejs/kit';
+import { sequence } from '@sveltejs/kit/hooks';
 import { createContext } from '$lib/trpc/context';
 import { router } from '$lib/trpc/router';
-import type { Handle } from '@sveltejs/kit';
 import { createTRPCHandle } from 'trpc-sveltekit';
+import {handle as handleAuth} from './auth'
 
-export const handle: Handle = createTRPCHandle({ router, createContext });
+const handleTrpc: Handle = createTRPCHandle({ router, createContext });
+
+export const handle = sequence(handleAuth,handleTrpc)
